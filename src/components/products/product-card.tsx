@@ -4,6 +4,7 @@ import { Check, ImageOff, Plus, X } from "lucide-react";
 
 import { useCart } from "@/components/inquiry/cart-provider";
 import { formatPrice, type Product } from "@/lib/products";
+import { publicPath } from "@/lib/public-path";
 
 export function ProductCard({ product }: { product: Product }) {
   const { add, remove, has } = useCart();
@@ -16,7 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
         {product.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={product.image}
+            src={publicPath(product.image)}
             alt={product.name}
             loading="lazy"
             className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.04]"

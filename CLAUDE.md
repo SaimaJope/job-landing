@@ -177,4 +177,5 @@ Tarkennus 2026-05-25 / GitHub Pages
 - GitHub Actions -deploy käyttää automaattisesti repon nimeä basePathina, esimerkiksi `SaimaJope/job-landing` tuottaa linkit `/job-landing/tuotteet/`.
 - Jos sivu julkaistaan myöhemmin omalla domainilla tai Vercelissä, basePath jää tyhjäksi ellei `NEXT_PUBLIC_BASE_PATH`-ympäristömuuttujaa aseteta.
 - Public-kansion assetit kuten `logo.png` pitää renderöidä `publicPath("/logo.png")`-helperillä, jotta GitHub Pagesin `/job-landing`-basePath tulee mukaan.
+- Sama koskee tuotekuvia. Katalogin `image`-arvot ovat muotoa `/products/<id>.jpg`, joten renderöinnissä pitää käyttää `publicPath(product.image)` eikä raakaa `product.image`-arvoa.
 

@@ -23,7 +23,7 @@ export default function ProductsPage() {
       />
       <SiteHeader />
 
-      <main className="relative z-10 px-5 pb-28 pt-32">
+      <main className="relative z-10 pb-28 pt-32">
         <div className="container-shell">
           <header className="max-w-2xl">
             <p className="eyebrow flex items-center gap-3">
@@ -35,8 +35,8 @@ export default function ProductsPage() {
             </h1>
             <p className="mt-6 text-pretty text-lg leading-8 text-text-secondary">
               Sähkö- ja talotekniikan tuotteita entisestä JOB Kaupasta. Lisää
-              tarvitsemasi tuotteet tilauslistalle ja lähetä se yhteydenottolomakkeella —
-              vahvistamme saatavuuden ja hinnan.
+              tarvitsemasi tuotteet tilauslistalle ja lähetä se yhteydenottolomakkeella.
+              Vahvistamme saatavuuden ja hinnan.
             </p>
             <p className="mt-4 text-sm text-text-tertiary">
               Hinnat sisältävät ALV 25,5 % ja ovat viitteellisiä. Verkkokauppa on

@@ -179,3 +179,8 @@ Tarkennus 2026-05-25 / GitHub Pages
 - Public-kansion assetit kuten `logo.png` pitää renderöidä `publicPath("/logo.png")`-helperillä, jotta GitHub Pagesin `/job-landing`-basePath tulee mukaan.
 - Sama koskee tuotekuvia. Katalogin `image`-arvot ovat muotoa `/products/<id>.jpg`, joten renderöinnissä pitää käyttää `publicPath(product.image)` eikä raakaa `product.image`-arvoa.
 
+Tarkennus 2026-05-25 / Tuotesivun mobiili
+- Tuotesivulla ei saa olla vaakasuuntaista scrollia mobiilissa. Älä yhdistä ulomman `main`-elementin vaakapaddingia kiinteäleveyksiseen `.container-shell`-asetukseen.
+- Mobiilissa alle Tailwindin `sm`-rajan (640px) tuotekortit näytetään yhtenä keskitettynä sarakkeena. Kahden sarakkeen grid alkaa vasta, kun kortit ja painikkeet mahtuvat ilman tekstin ylivuotoa.
+- Kategoriat eivät saa venyttää mobiilileveyttä. Käytä mobiilissa täysleveää grid-listaa, `min-w-0`-suojia ja tekstin truncatea pitkille kategorianimille.
+

@@ -12,7 +12,10 @@ export function ProductCard({ product }: { product: Product }) {
   const price = formatPrice(product.price);
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-white/[0.015] transition-colors duration-300 hover:border-border-strong">
+    <article
+      data-product-card
+      className="group flex w-full max-w-[340px] flex-col overflow-hidden rounded-xl border border-border bg-white/[0.015] transition-colors duration-300 hover:border-border-strong"
+    >
       <div className="relative aspect-square overflow-hidden bg-white/90">
         {product.image ? (
           // eslint-disable-next-line @next/next/no-img-element

@@ -43,6 +43,7 @@
 html {
   scroll-behavior: smooth;
   background: var(--background);
+  overflow-x: hidden;
 }
 
 body {
@@ -308,10 +309,9 @@ textarea {
 @media (max-width: 520px) {
   .container-shell,
   .container-narrow {
-    width: min(358px, calc(100vw - 32px));
-    max-width: min(358px, calc(100vw - 32px));
-    margin-left: 16px;
-    margin-right: auto;
+    width: 100%;
+    max-width: calc(100vw - 32px);
+    margin-inline: auto;
     padding-left: 0;
     padding-right: 0;
   }

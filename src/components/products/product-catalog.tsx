@@ -36,11 +36,11 @@ export function ProductCatalog({ catalog }: { catalog: Catalog }) {
   const remaining = filtered.length - visible.length;
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[240px_1fr] lg:gap-12">
+    <div className="grid min-w-0 gap-10 lg:grid-cols-[240px_1fr] lg:gap-12">
       {/* category rail */}
-      <aside className="lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain scroll-slim lg:pr-2">
+      <aside className="min-w-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain scroll-slim lg:pr-2">
         <p className="eyebrow mb-4">Kategoriat</p>
-        <nav className="flex flex-wrap gap-2 lg:flex-col lg:gap-1 lg:pb-4">
+        <nav className="grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-col lg:gap-1 lg:pb-4">
           <CategoryButton
             active={active === "all"}
             onClick={() => setActive("all")}
@@ -59,7 +59,7 @@ export function ProductCatalog({ catalog }: { catalog: Catalog }) {
         </nav>
       </aside>
 
-      <div>
+      <div className="min-w-0">
         <div className="relative mb-6">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-tertiary" />
           <input
@@ -91,7 +91,10 @@ export function ProductCatalog({ catalog }: { catalog: Catalog }) {
           </p>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+            <div
+              data-product-grid
+              className="mx-auto grid w-full min-w-0 grid-cols-1 justify-items-center gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            >
               {visible.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
@@ -129,7 +132,7 @@ function CategoryButton({
     <button
       type="button"
       onClick={onClick}
-      className={`flex max-w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-xs tracking-wide transition lg:w-full ${
+      className={`flex w-full min-w-0 max-w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-xs tracking-wide transition ${
         active
           ? "bg-white/[0.06] text-text-primary"
           : "text-text-secondary hover:bg-white/[0.03] hover:text-text-primary"

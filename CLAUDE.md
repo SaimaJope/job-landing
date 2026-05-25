@@ -165,6 +165,16 @@ Tarkennus 2026-05-25 / Suorituskyky
 
 Tarkennus 2026-05-25 / Header ja tuotteet
 - Logo vie aina etusivulle (`/`), myös tuotesivulta.
-- Oikean reunan tärkeät toiminnot ovat tekstillisiä: `Selaa tuotteita` ja `Pyydä tarjous`. Pelkkää tyhjää tilauslistaikonia ei näytetä, koska se on epäselvä.
+- Hero-alueen CTA-rivillä on `Pyydä tarjous` ja sen vieressä `Selaa tuotteita`.
+- Yläpalkin oikeassa reunassa ei näytetä tekstillistä `Selaa tuotteita` -nappia. Tuotesivu löytyy päävalikon `Tuotteet`-linkistä ja hero-CTA:sta.
 - Tilauslistaikoni näytetään headerissa vain, jos listalla on tuotteita.
+
+Tarkennus 2026-05-25 / GitHub Pages
+- GitHub Pages vaatii staattisen exportin. `next.config.ts` käyttää `output: "export"`, `trailingSlash: true` ja `images.unoptimized: true`.
+- Deployaa GitHub Pagesiin `out/`-kansion sisältö, ei `.next/`-kansiota eikä pelkkää projektin juurta.
+- `public/.nojekyll` pitää olla mukana, jotta Pages ei suodata `_next`-asset-kansiota.
+- Sisäiset sivulinkit kuten tuotteet kirjoitetaan trailing slashilla (`/tuotteet/`), jotta ne vastaavat staattista hakemistorakennetta.
+- GitHub Actions -deploy käyttää automaattisesti repon nimeä basePathina, esimerkiksi `SaimaJope/job-landing` tuottaa linkit `/job-landing/tuotteet/`.
+- Jos sivu julkaistaan myöhemmin omalla domainilla tai Vercelissä, basePath jää tyhjäksi ellei `NEXT_PUBLIC_BASE_PATH`-ympäristömuuttujaa aseteta.
+- Public-kansion assetit kuten `logo.png` pitää renderöidä `publicPath("/logo.png")`-helperillä, jotta GitHub Pagesin `/job-landing`-basePath tulee mukaan.
 

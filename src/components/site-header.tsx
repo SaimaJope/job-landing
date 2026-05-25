@@ -7,10 +7,11 @@ import { useEffect, useState } from "react";
 
 import { useCart } from "@/components/inquiry/cart-provider";
 import { buttonVariants } from "@/components/ui/button";
+import { publicPath } from "@/lib/public-path";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { label: "Tuotteet", href: "/tuotteet" },
+  { label: "Tuotteet", href: "/tuotteet/" },
   { label: "Palvelut", href: "/#palvelut" },
   { label: "Toteutus", href: "/#toteutus" },
   { label: "Alue", href: "/#toiminta-alue" },
@@ -48,7 +49,7 @@ export function SiteHeader() {
           onClick={() => setOpen(false)}
         >
           <Image
-            src="/logo.png"
+            src={publicPath("/logo.png")}
             alt="JOB Kiinteistötekniikka Oy"
             width={170}
             height={80}
@@ -84,13 +85,6 @@ export function SiteHeader() {
             044 572 3200
           </a>
           {count > 0 ? <CartButton count={count} onClick={openCart} /> : null}
-          <Link
-            href="/tuotteet"
-            className={cn(buttonVariants({ variant: "outline", size: "sm" }), "px-4")}
-          >
-            <ShoppingBag className="h-4 w-4 text-accent-glow" />
-            Selaa tuotteita
-          </Link>
           <Link href="/#yhteystiedot" className={cn(buttonVariants({ size: "sm" }))}>
             Pyydä tarjous
           </Link>
@@ -137,14 +131,6 @@ export function SiteHeader() {
               044 572 3200
             </a>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Link
-                href="/tuotteet"
-                className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
-                onClick={() => setOpen(false)}
-              >
-                <ShoppingBag className="h-4 w-4 text-accent-glow" />
-                Selaa tuotteita
-              </Link>
               <Link
                 href="/#yhteystiedot"
                 className={cn(buttonVariants({ size: "sm" }))}

@@ -14,6 +14,7 @@ import {
   Phone,
   RadioTower,
   ShieldCheck,
+  ShoppingBag,
   Thermometer,
   User,
   Zap,
@@ -236,13 +237,13 @@ function HeroSection() {
               Pyydä tarjous
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <a
-              href="tel:+358445723200"
+            <Link
+              href="/tuotteet/"
               className={buttonVariants({ variant: "outline", size: "lg" })}
             >
-              <Phone className="h-4 w-4 text-accent-glow" />
-              044 572 3200
-            </a>
+              <ShoppingBag className="h-4 w-4 text-accent-glow" />
+              Selaa tuotteita
+            </Link>
           </div>
         </Reveal>
 

@@ -1,0 +1,19 @@
+.next
+node_modules
+out
+dist
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dev-server.log
+render-check/
+
+# scraper scratch (src/data/catalog.json + public/products are committed)
+/wb_*.json
+/wb_*.txt
+/sample_prod.html
+/scraped-products.json

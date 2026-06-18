@@ -11,6 +11,7 @@ yarn-error.log*
 pnpm-debug.log*
 dev-server.log
 render-check/
+.shots/
 
 # scraper scratch (src/data/catalog.json + public/products are committed)
 /wb_*.json

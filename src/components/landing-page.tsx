@@ -1,22 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import {
-  ArrowDown,
   ArrowRight,
   ArrowUpRight,
+  Award,
+  BadgeCheck,
   Building2,
+  ClipboardCheck,
+  FileCheck,
   Landmark,
   Mail,
   MapPin,
+  Network,
+  PencilRuler,
   Phone,
+  PlugZap,
   RadioTower,
   ShieldCheck,
-  ShoppingBag,
   Thermometer,
   User,
+  Users,
+  Wrench,
   Zap,
   type LucideIcon,
 } from "lucide-react";
@@ -26,9 +32,9 @@ import { ContactForm } from "@/components/contact-form";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type Service = {
-  index: string;
   icon: LucideIcon;
   title: string;
   description: string;
@@ -37,37 +43,54 @@ type Service = {
 
 const services: Service[] = [
   {
-    index: "01",
     icon: Zap,
     title: "Sähköasennukset",
     description:
-      "Sähköjärjestelmien suunnittelu ja asennus uudis- ja saneerauskohteisiin. Kiinteistöt, yrityskohteet ja taloyhtiöt aikataulun ja dokumentoinnin mukaan.",
+      "Sähköjärjestelmien suunnittelu ja asennus uudis- ja saneerauskohteisiin. Kiinteistöt, yrityskohteet ja taloyhtiöt.",
     qualification: "TUKES sähköurakointi",
   },
   {
-    index: "02",
     icon: RadioTower,
-    title: "Tele- ja antennijärjestelmät",
+    title: "Tele ja antenni",
     description:
-      "Antenni-, satelliitti- ja tietoverkkojen rakentaminen sekä päivitykset. Kiinteistöjen sisäverkot ja yhteydet kuntoon.",
+      "Antenni-, satelliitti- ja tietoverkkojen rakentaminen sekä päivitykset. Kiinteistöjen sisäverkot kuntoon.",
     qualification: "Seti Oy telepätevyys",
   },
   {
-    index: "03",
     icon: ShieldCheck,
     title: "Turvajärjestelmät",
     description:
-      "Paloilmoittimet, kameravalvonta ja kulunvalvonta. Kokonaisuus mitoitetaan kohteen käytön ja vaatimusten mukaan.",
-    qualification: "Poliisihallituksen elinkeinolupa",
+      "Paloilmoittimet, kameravalvonta ja kulunvalvonta. Mitoitus kohteen käytön ja vaatimusten mukaan.",
+    qualification: "Poliisihallituksen lupa",
   },
   {
-    index: "04",
     icon: Thermometer,
-    title: "Kiinteistöhuolto ja kylmälaitteet",
+    title: "Huolto ja kylmälaitteet",
     description:
-      "Lämpöpumppu- ja kylmälaiteasennukset sekä kiinteistötekniikan jatkuva huolto. Yksittäiset kohteet ja ylläpitosopimukset.",
-    qualification: "TUKES kylmälaiteasennus · SULPU",
+      "Lämpöpumppu- ja kylmälaiteasennukset sekä kiinteistötekniikan jatkuva huolto ja ylläpitosopimukset.",
+    qualification: "TUKES kylmälaiteasennus",
   },
+];
+
+const heroStrip = [
+  { icon: PencilRuler, label: "Suunnittelu" },
+  { icon: PlugZap, label: "Asennus" },
+  { icon: Wrench, label: "Huolto" },
+  { icon: ClipboardCheck, label: "Ylläpito" },
+];
+
+const trustItems = [
+  { icon: Users, title: "25 ammattilaista", meta: "Iisalmesta Varkauteen" },
+  { icon: BadgeCheck, title: "TUKES-luvat", meta: "Sähkö, paloilmoitin, kylmälaite" },
+  { icon: Award, title: "Luotettava Kumppani", meta: "Tilaajavastuu.fi" },
+  { icon: Network, title: "STUL · SANT · SULPU", meta: "Liittojäsenyydet" },
+  { icon: FileCheck, title: "Elinkeinolupa", meta: "Poliisihallitus, turvallisuusala" },
+];
+
+const companyStats = [
+  { value: "25", label: "Ammattilaista" },
+  { value: "4", label: "Osaamisaluetta" },
+  { value: "10", label: "Lupaa ja jäsenyyttä" },
 ];
 
 const audiences = [
@@ -75,20 +98,33 @@ const audiences = [
     icon: User,
     title: "Yksityishenkilöt",
     description:
-      "Omakotitalojen ja vapaa-ajan asuntojen sähkö-, tele- ja lämpöpumpputyöt asennuksesta huoltoon.",
+      "Omakotitalojen ja vapaa-ajan asuntojen sähkö-, tele- ja lämpöpumpputyöt.",
   },
   {
     icon: Building2,
     title: "Yritykset",
     description:
-      "Liike- ja teollisuuskohteiden sähkö-, turva- ja kiinteistötekniikka. Yksi vastuullinen toteuttaja.",
+      "Liike- ja teollisuuskohteiden sähkö-, turva- ja kiinteistötekniikka.",
   },
   {
     icon: Landmark,
     title: "Julkinen sektori",
     description:
-      "Kuntien ja julkisten kohteiden urakat dokumentoidusti ja vaatimusten mukaan toteutettuna.",
+      "Kuntien ja julkisten kohteiden urakat dokumentoidusti toteutettuna.",
   },
+];
+
+const credentials = [
+  "TUKES sähköurakointi",
+  "TUKES paloilmoitin",
+  "TUKES kylmälaiteasennus",
+  "STUL",
+  "SANT",
+  "SULPU",
+  "Seti Oy telepätevyys",
+  "Poliisihallitus",
+  "Tilaajavastuu.fi Luotettava Kumppani",
+  "Elektria-ketjun jäsenliike",
 ];
 
 const processSteps = [
@@ -112,20 +148,14 @@ const processSteps = [
   },
 ];
 
-const credentials = [
-  "TUKES sähköurakointi",
-  "TUKES paloilmoitin",
-  "TUKES kylmälaiteasennus",
-  "STUL",
-  "SANT",
-  "SULPU",
-  "Seti Oy telepätevyys",
-  "Poliisihallitus",
-  "Tilaajavastuu.fi Luotettava Kumppani",
-  "Elektria-ketjun jäsenliike",
+const areaTargets = [
+  { label: "Pohjois-Savo", query: "Pohjois-Savo, Finland", zoom: 8 },
+  { label: "Iisalmi", query: "Iisalmi, Finland", zoom: 12 },
+  { label: "Siilinjärvi", query: "Siilinjärvi, Finland", zoom: 12 },
+  { label: "Kuopio", query: "Kuopio, Finland", zoom: 12 },
+  { label: "Leppävirta", query: "Leppävirta, Finland", zoom: 12 },
+  { label: "Varkaus", query: "Varkaus, Finland", zoom: 12 },
 ];
-
-const cities = ["Iisalmi", "Siilinjärvi", "Kuopio", "Leppävirta", "Varkaus"];
 
 const contactRows = [
   {
@@ -152,20 +182,21 @@ const contactRows = [
 export function LandingPage() {
   return (
     <div id="top" className="relative min-h-screen">
-      {/* faint ambient so sections below the hero keep the mood without the busy bokeh */}
+      {/* faint ambient so sections below the hero keep the deep blue mood */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(70%_50%_at_80%_120%,rgba(120,92,255,0.07),transparent),radial-gradient(60%_45%_at_15%_110%,rgba(0,141,200,0.08),transparent)]"
+        className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(70%_50%_at_82%_115%,rgba(64,86,220,0.1),transparent),radial-gradient(60%_45%_at_12%_108%,rgba(0,141,200,0.08),transparent)]"
       />
       <SiteHeader />
 
       <main className="relative z-10">
         <HeroSection />
         <ServicesSection />
-        <AudienceSection />
+        <TrustBand />
+        <CompanySection />
         <ProcessSection />
-        <CredentialsSection />
         <AreaSection />
+        <CtaBand />
         <ContactSection />
       </main>
 
@@ -174,7 +205,10 @@ export function LandingPage() {
   );
 }
 
-/* ---------- scroll reveal ---------- */
+/* ---------- scroll reveal ----------
+   Content is server-rendered visible. The hidden state is applied only after
+   mount and only to elements below the fold, so nothing disappears if JS or
+   IntersectionObserver is late. */
 
 function Reveal({
   children,
@@ -185,20 +219,46 @@ function Reveal({
   delay?: number;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const [hidden, setHidden] = useState(false);
+  const [shown, setShown] = useState(false);
 
-  if (reduce) return <div className={className}>{children}</div>;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("IntersectionObserver" in window)) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92) return;
+
+    setHidden(true);
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShown(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "-70px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <motion.div
-      className={className}
-      initial={false}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-90px" }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+    <div
+      ref={ref}
+      className={cn(
+        "reveal",
+        hidden && "reveal-hidden",
+        shown && "reveal-shown",
+        className,
+      )}
+      style={delay && shown ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -206,75 +266,126 @@ function Reveal({
 
 function HeroSection() {
   return (
-    <section className="relative flex min-h-[94svh] items-center justify-center overflow-hidden px-5 pt-28 pb-24 text-center">
+    <section className="relative overflow-hidden">
       <BokehBackground />
+      <LightArc />
 
-      <div className="container-narrow relative z-10 flex flex-col items-center">
-        <Reveal>
-          <p className="eyebrow flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center">
-            Pohjois-Savo · perustettu osaamiselle
+      <div className="container-shell relative z-10 grid min-h-[92svh] items-center gap-14 pb-20 pt-36 lg:grid-cols-[1.04fr_0.96fr] lg:gap-10">
+        <div className="max-w-xl">
+          <p className="hero-rise label-caps text-accent">
+            Luotettava. Vastuullinen. Tekninen.
           </p>
-        </Reveal>
 
-        <Reveal delay={0.08}>
-          <h1 className="mt-8 text-balance text-[clamp(2.6rem,7.5vw,5.25rem)] font-medium leading-[1.02] tracking-[-0.03em] text-text-primary [text-shadow:0_2px_50px_rgba(0,0,0,0.55)]">
-            Sähkö, tele
-            <br className="sm:hidden" /> ja turva
-            <br /> Pohjois-Savossa.
+          <h1 className="hero-rise mt-7 text-balance font-display text-[clamp(2.5rem,6.4vw,4.6rem)] font-medium leading-[1.05] tracking-[-0.02em] [animation-delay:100ms]">
+            <span className="text-display">Kiinteistötekniikkaa,</span>
+            <br />
+            <span className="text-accent-line">joka toimii.</span>
           </h1>
-        </Reveal>
 
-        <Reveal delay={0.16}>
-          <p className="mt-8 max-w-xl text-pretty text-lg leading-8 text-text-secondary sm:text-xl">
-            Suunnittelusta asennukseen. 25 ammattilaista Iisalmesta Varkauteen ja
-            tarvittaessa koko Suomeen.
+          <p className="hero-rise mt-7 max-w-lg text-pretty leading-8 text-text-secondary [animation-delay:200ms] sm:text-lg">
+            JOB Kiinteistötekniikka Oy tarjoaa kokonaisvaltaiset sähkö-, tele- ja
+            turvaratkaisut kiinteistöihin, toimitiloihin ja teollisuuteen.
+            Suunnittelusta asennukseen ja ylläpitoon, 25 ammattilaisen voimin.
           </p>
-        </Reveal>
 
-        <Reveal delay={0.24}>
-          <div className="mt-11 flex flex-col items-center gap-4 sm:flex-row">
+          <div className="hero-rise mt-10 flex flex-wrap items-center gap-6 [animation-delay:300ms]">
             <Link href="#yhteystiedot" className={buttonVariants({ size: "lg" })}>
               Pyydä tarjous
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              href="/tuotteet/"
-              className={buttonVariants({ variant: "outline", size: "lg" })}
+              href="#palvelut"
+              className="label-caps group inline-flex items-center gap-2.5 text-text-secondary transition-colors hover:text-text-primary"
             >
-              <ShoppingBag className="h-4 w-4 text-accent-glow" />
-              Selaa tuotteita
+              Palvelut
+              <ArrowRight className="h-4 w-4 text-accent transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
-        </Reveal>
 
-        <Reveal delay={0.34}>
-          <p className="eyebrow-muted mt-16 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
-            <span>TUKES</span>
-            <Dot />
-            <span>STUL</span>
-            <Dot />
-            <span>Seti Oy</span>
-            <Dot />
-            <span>SULPU</span>
-            <Dot />
-            <span>Tilaajavastuu Luotettava Kumppani</span>
-          </p>
-        </Reveal>
+          <a
+            href="tel:+358445723200"
+            className="hero-rise mt-9 inline-flex items-center gap-2.5 font-mono text-[12px] tracking-[0.12em] text-text-secondary transition [animation-delay:400ms] hover:text-accent"
+          >
+            <Phone className="h-3.5 w-3.5 text-accent" />
+            044 572 3200
+          </a>
+        </div>
+
+        <div className="hero-rise relative flex flex-col justify-center [animation-delay:250ms]">
+          {/* soft glow field where the arc passes, so the right side keeps light */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-10 -top-44 bottom-0 hidden bg-[radial-gradient(42%_46%_at_56%_30%,rgba(47,120,230,0.18),transparent_72%),radial-gradient(26%_30%_at_72%_16%,rgba(124,192,255,0.14),transparent_70%)] lg:block"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute left-[58%] top-[-120px] hidden h-28 w-28 -translate-x-1/2 lg:block"
+          >
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(150,205,255,0.38),transparent_62%)]" />
+            <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_18px_6px_rgba(160,210,255,0.85)]" />
+          </div>
+
+          <div className="card-glow relative grid grid-cols-2 gap-y-7 px-4 py-7 backdrop-blur-xl sm:grid-cols-4">
+            {heroStrip.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.label}
+                  className={cn(
+                    "flex flex-col items-center gap-3 text-center",
+                    i > 0 && "sm:border-l sm:border-[rgba(77,166,255,0.14)]",
+                  )}
+                >
+                  <Icon className="h-6 w-6 text-accent [filter:drop-shadow(0_0_10px_rgba(77,166,255,0.5))]" />
+                  <span className="label-caps text-[10px] text-text-secondary">
+                    {item.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
-
-      <a
-        href="#palvelut"
-        aria-label="Vieritä palveluihin"
-        className="absolute bottom-9 left-1/2 hidden -translate-x-1/2 text-text-tertiary transition hover:text-accent-glow sm:block"
-      >
-        <ArrowDown className="h-5 w-5 animate-bounce [animation-duration:2.4s]" />
-      </a>
     </section>
   );
 }
 
-function Dot() {
-  return <span className="h-1 w-1 rounded-full bg-text-tertiary/70" aria-hidden="true" />;
+/* glowing light arc sweeping across the hero, like a single long exposure */
+function LightArc() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 h-full w-full"
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="xMidYMid slice"
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="arcGrad" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stopColor="#4da6ff" stopOpacity="0" />
+          <stop offset="0.45" stopColor="#7cc0ff" stopOpacity="0.5" />
+          <stop offset="0.75" stopColor="#9bd0ff" stopOpacity="0.8" />
+          <stop offset="1" stopColor="#4da6ff" stopOpacity="0" />
+        </linearGradient>
+        <filter id="arcBlur" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="7" />
+        </filter>
+      </defs>
+      <path
+        d="M-80,700 C420,610 780,470 1240,210"
+        stroke="url(#arcGrad)"
+        strokeWidth="12"
+        opacity="0.3"
+        filter="url(#arcBlur)"
+      />
+      <path
+        d="M-80,700 C420,610 780,470 1240,210"
+        stroke="url(#arcGrad)"
+        strokeWidth="1.6"
+        opacity="0.85"
+      />
+    </svg>
+  );
 }
 
 /* ---------- services ---------- */
@@ -284,37 +395,27 @@ function ServicesSection() {
     <section id="palvelut" className="section-pad">
       <div className="container-shell">
         <Reveal>
-          <SectionHeader
-            kicker="Palvelut"
-            title="Neljä osaamisaluetta saman katon alta."
-            description="Sähkö, tele, turva ja kiinteistötekniikan huolto voidaan koota yhdelle toteuttajalle. Vastuut pysyvät selkeinä koko projektin ajan."
-          />
+          <h2 className="section-label">Palvelumme</h2>
         </Reveal>
 
-        <div className="mt-16 border-t border-border">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {services.map((service, i) => {
             const Icon = service.icon;
             return (
-              <Reveal key={service.index} delay={i * 0.06}>
-                <div className="group grid grid-cols-1 gap-4 border-b border-border py-10 md:grid-cols-[auto_1fr_auto] md:items-start md:gap-12">
-                  <span className="font-display text-4xl font-medium leading-none text-text-tertiary/40 transition-colors duration-300 group-hover:text-primary md:w-20 md:text-5xl">
-                    {service.index}
-                  </span>
-
-                  <div className="max-w-2xl">
-                    <div className="flex items-center gap-3">
-                      <Icon className="h-5 w-5 text-accent-glow" />
-                      <h3 className="text-2xl font-medium tracking-[-0.01em] text-text-primary transition-colors duration-300 group-hover:text-accent-glow">
-                        {service.title}
-                      </h3>
-                    </div>
-                    <p className="mt-4 leading-7 text-text-secondary">
-                      {service.description}
-                    </p>
-                  </div>
-
-                  <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-text-tertiary md:max-w-[180px] md:pt-2 md:text-right">
-                    {service.qualification}
+              <Reveal key={service.title} delay={i * 0.05} className="h-full">
+                <div className="card-glow card-glow-hoverlift group flex h-full flex-col p-7">
+                  <Icon className="h-7 w-7 text-accent [filter:drop-shadow(0_0_12px_rgba(77,166,255,0.45))]" />
+                  <h3 className="mt-6 text-lg font-medium tracking-[-0.01em] text-text-primary">
+                    {service.title}
+                  </h3>
+                  <p className="mt-3 flex-1 text-sm leading-6 text-text-secondary">
+                    {service.description}
+                  </p>
+                  <div className="mt-7 flex items-end justify-between gap-4">
+                    <span className="font-mono text-[10px] uppercase leading-4 tracking-[0.13em] text-text-tertiary">
+                      {service.qualification}
+                    </span>
+                    <ArrowRight className="h-4 w-4 shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>
               </Reveal>
@@ -326,31 +427,114 @@ function ServicesSection() {
   );
 }
 
-/* ---------- audience ---------- */
+/* ---------- trust band ---------- */
 
-function AudienceSection() {
+function TrustBand() {
   return (
-    <section id="kenelle" className="section-pad">
+    <section className="pb-6">
       <div className="container-shell">
         <Reveal>
-          <SectionHeader kicker="Kenelle" title="Sama tekniikka, eri tilaajat." />
-        </Reveal>
-
-        <div className="mt-16 grid gap-10 md:grid-cols-3 md:gap-0">
-          {audiences.map((item, i) => {
-            const Icon = item.icon;
-            return (
-              <Reveal key={item.title} delay={i * 0.08}>
-                <div className="group h-full border-t border-border pt-7 md:px-9 md:first:pl-0">
-                  <Icon className="h-6 w-6 text-accent-glow" />
-                  <h3 className="mt-6 text-xl font-medium text-text-primary">
+          <div className="card-glow grid grid-cols-2 gap-y-9 px-6 py-9 md:grid-cols-3 xl:grid-cols-5">
+            {trustItems.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className={cn(
+                    "flex flex-col items-center gap-3 px-3 text-center",
+                    i > 0 && "xl:border-l xl:border-[rgba(77,166,255,0.13)]",
+                  )}
+                >
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[rgba(77,166,255,0.28)] bg-[rgba(16,32,58,0.4)]">
+                    <Icon className="h-5 w-5 text-accent" />
+                  </span>
+                  <span className="text-sm font-medium text-text-primary">
                     {item.title}
-                  </h3>
-                  <p className="mt-3 leading-7 text-text-secondary">{item.description}</p>
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-text-tertiary">
+                    {item.meta}
+                  </span>
                 </div>
-              </Reveal>
-            );
-          })}
+              );
+            })}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- company ---------- */
+
+function CompanySection() {
+  return (
+    <section id="yritys" className="section-pad">
+      <div className="container-shell">
+        <div className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
+          <Reveal>
+            <div>
+              <p className="label-caps text-accent">Osaamisemme</p>
+              <h2 className="mt-6 text-balance font-display text-[clamp(1.9rem,4vw,2.9rem)] font-medium leading-[1.12] tracking-[-0.02em] text-text-primary">
+                Teknistä osaamista.
+                <br />
+                Inhimillistä otetta.
+              </h2>
+              <p className="mt-6 max-w-lg text-pretty leading-8 text-text-secondary">
+                Yhdistämme vahvan teknisen osaamisen ja käytännön kokemuksen.
+                Meille tärkeintä on ratkaista asiakkaan tarve luotettavasti,
+                laatua ja aikataulua kunnioittaen.
+              </p>
+
+              <div className="mt-10 flex flex-wrap gap-x-12 gap-y-7">
+                {companyStats.map((stat) => (
+                  <div key={stat.label}>
+                    <div className="font-display text-4xl font-medium text-text-primary">
+                      {stat.value}
+                      <span className="text-accent">+</span>
+                    </div>
+                    <div className="eyebrow-muted mt-2">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              <ul className="mt-11 flex max-w-lg flex-wrap gap-2.5">
+                {credentials.map((credential) => (
+                  <li
+                    key={credential}
+                    className="rounded-full border border-[rgba(77,166,255,0.18)] bg-[rgba(13,24,44,0.4)] px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-[0.11em] text-text-secondary transition-colors duration-300 hover:border-[rgba(120,185,255,0.45)] hover:text-text-primary"
+                  >
+                    {credential}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <div className="flex h-full flex-col justify-center gap-5">
+              {audiences.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.title}
+                    className="card-glow card-glow-hoverlift flex items-start gap-5 p-6"
+                  >
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[rgba(77,166,255,0.28)] bg-[rgba(16,32,58,0.4)]">
+                      <Icon className="h-5 w-5 text-accent" />
+                    </span>
+                    <span>
+                      <span className="block font-medium text-text-primary">
+                        {item.title}
+                      </span>
+                      <span className="mt-1.5 block text-sm leading-6 text-text-secondary">
+                        {item.description}
+                      </span>
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -361,31 +545,23 @@ function AudienceSection() {
 
 function ProcessSection() {
   return (
-    <section id="toteutus" className="section-pad">
+    <section id="toteutus" className="section-pad pt-0">
       <div className="container-shell">
         <Reveal>
-          <SectionHeader
-            kicker="Toteutus"
-            title="Työ etenee sovitussa järjestyksessä."
-            description="Tilaajan kannattaa tietää miten urakka etenee yhteydenoton jälkeen. Prosessi on sama kohteen koosta riippumatta."
-          />
+          <h2 className="section-label">Näin työ etenee</h2>
         </Reveal>
 
-        <div className="relative mt-16 grid gap-12 md:grid-cols-3 md:gap-10">
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
           {processSteps.map((step, i) => (
-            <Reveal key={step.index} delay={i * 0.1}>
-              <div className="relative">
-                <div className="flex items-baseline gap-4">
-                  <span
-                    className="h-2.5 w-2.5 shrink-0 translate-y-[-4px] rounded-full bg-accent-glow shadow-[0_0_16px_rgba(103,232,249,0.6)]"
-                    aria-hidden="true"
-                  />
-                  <span className="font-display text-5xl font-medium leading-none text-text-primary">
-                    {step.index}
-                  </span>
+            <Reveal key={step.index} delay={i * 0.07} className="h-full">
+              <div className="card-glow h-full p-8">
+                <div className="font-display text-[2.6rem] font-medium leading-none">
+                  <span className="text-accent-line">{step.index}</span>
                 </div>
-                <h3 className="mt-6 text-xl font-medium text-text-primary">{step.title}</h3>
-                <p className="mt-3 max-w-sm leading-7 text-text-secondary">
+                <h3 className="mt-6 text-lg font-medium text-text-primary">
+                  {step.title}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-text-secondary">
                   {step.description}
                 </p>
               </div>
@@ -397,71 +573,55 @@ function ProcessSection() {
   );
 }
 
-/* ---------- credentials ---------- */
-
-function CredentialsSection() {
-  return (
-    <section id="luvat" className="section-pad">
-      <div className="container-shell">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-          <Reveal>
-            <SectionHeader
-              kicker="Luvat ja jäsenyydet"
-              title="Luvat ja pätevyydet kunnossa."
-              description="Sähköurakointi edellyttää näyttöä, ei lupauksia. Tässä toiminnan perusta."
-            />
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <ul className="flex flex-wrap gap-3">
-              {credentials.map((credential) => (
-                <li
-                  key={credential}
-                  className="rounded-full border border-border bg-white/[0.015] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-text-secondary transition-colors duration-300 hover:border-border-strong hover:text-text-primary"
-                >
-                  {credential}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ---------- area ---------- */
 
 function AreaSection() {
-  const mapSrc =
-    "https://www.google.com/maps?q=Pohjois-Savo,%20Finland&z=8&output=embed";
+  const [active, setActive] = useState(0);
+  const target = areaTargets[active];
+  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
+    target.query,
+  )}&z=${target.zoom}&output=embed`;
 
   return (
-    <section id="toiminta-alue" className="section-pad">
+    <section id="toiminta-alue" className="section-pad pt-0">
       <div className="container-shell">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <Reveal>
             <div>
-              <SectionHeader
-                kicker="Toiminta-alue"
-                title="Pohjois-Savo on kotialue."
-                description="Pääasiallinen toiminta-alue on Iisalmi, Siilinjärvi, Kuopio, Leppävirta ja Varkaus. Tarvittaessa teemme asennuksia muuallakin Suomessa."
-              />
+              <p className="label-caps text-accent">Toiminta-alue</p>
+              <h2 className="mt-6 text-balance font-display text-[clamp(1.9rem,4vw,2.9rem)] font-medium leading-[1.12] tracking-[-0.02em] text-text-primary">
+                Pohjois-Savo on kotialue.
+              </h2>
+              <p className="mt-6 text-pretty leading-8 text-text-secondary">
+                Pääasiallinen toiminta-alue on Iisalmi, Siilinjärvi, Kuopio,
+                Leppävirta ja Varkaus. Tarvittaessa teemme asennuksia muuallakin
+                Suomessa.
+              </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-text-secondary">
-                {cities.map((city, i) => (
-                  <span key={city} className="flex items-center gap-3">
-                    {i > 0 ? <Dot /> : null}
-                    {city}
-                  </span>
+              <div className="mt-9 flex flex-wrap gap-2.5">
+                {areaTargets.map((item, i) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    onClick={() => setActive(i)}
+                    aria-pressed={i === active}
+                    className={cn(
+                      "rounded-full border px-4 py-2 font-mono text-[11px] uppercase tracking-[0.12em] transition-all duration-200",
+                      i === active
+                        ? "border-[rgba(120,185,255,0.6)] bg-[rgba(47,130,255,0.12)] text-text-primary shadow-[0_0_18px_rgba(77,166,255,0.18)]"
+                        : "border-[rgba(77,166,255,0.18)] text-text-secondary hover:border-[rgba(120,185,255,0.4)] hover:text-text-primary",
+                    )}
+                  >
+                    {item.label}
+                  </button>
                 ))}
               </div>
 
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Pohjois-Savo,%20Finland"
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(target.query)}`}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-9 inline-flex items-center gap-2 text-sm text-accent-glow transition hover:gap-3"
+                className="mt-9 inline-flex items-center gap-2 text-sm text-accent transition-all hover:gap-3"
               >
                 Avaa Google Mapsissa
                 <ArrowUpRight className="h-4 w-4" />
@@ -469,21 +629,59 @@ function AreaSection() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.12}>
-            <div className="panel overflow-hidden rounded-xl p-1.5">
-              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-lg bg-background">
+          <Reveal delay={0.1}>
+            <div className="card-glow overflow-hidden p-1.5">
+              <div className="relative aspect-[16/11] w-full overflow-hidden rounded-xl bg-background">
                 <iframe
-                  title="JOB Kiinteistötekniikka toiminta-alue Google Mapsissa"
+                  key={target.label}
+                  title={`JOB Kiinteistötekniikka toiminta-alue: ${target.label}`}
                   src={mapSrc}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="h-full w-full border-0 grayscale invert-[0.92] hue-rotate-[170deg] saturate-[0.6] contrast-[0.95] brightness-[0.78]"
                 />
-                <div className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-border" />
+                <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-[rgba(77,166,255,0.15)]" />
               </div>
             </div>
           </Reveal>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- CTA band ---------- */
+
+function CtaBand() {
+  return (
+    <section className="pb-6">
+      <div className="container-shell">
+        <Reveal>
+          <div className="card-glow relative overflow-hidden p-9 sm:p-12">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_120%_at_8%_50%,rgba(47,120,230,0.16),transparent_70%),radial-gradient(40%_120%_at_92%_50%,rgba(80,70,200,0.14),transparent_70%)]"
+            />
+            <div className="relative flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
+              <div>
+                <h2 className="font-display text-[clamp(1.6rem,3.2vw,2.3rem)] font-medium tracking-[-0.01em] text-text-primary">
+                  Valmiina seuraavaan projektiin?
+                </h2>
+                <p className="mt-3 max-w-md leading-7 text-text-secondary">
+                  Kerro kohteesta, niin suunnitellaan yhdessä toimiva ja kestävä
+                  ratkaisu. Vastaamme arkisin.
+                </p>
+              </div>
+              <Link
+                href="#yhteystiedot"
+                className={cn(buttonVariants({ size: "lg" }), "shrink-0")}
+              >
+                Ota yhteyttä
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -496,22 +694,18 @@ function ContactSection() {
     <section id="yhteystiedot" className="section-pad">
       <div className="container-shell">
         <Reveal>
-          <SectionHeader
-            kicker="Yhteydenotto"
-            title="Kerro kohteesta."
-            description="Lähetä viesti lomakkeella tai soita suoraan. Vastaamme arkisin."
-          />
+          <h2 className="section-label">Ota yhteyttä</h2>
         </Reveal>
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        <div className="mt-14 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <Reveal>
-            <div className="panel rounded-2xl p-6 sm:p-9">
+            <div className="card-glow p-6 sm:p-9">
               <ContactForm />
             </div>
           </Reveal>
 
-          <Reveal delay={0.1}>
-            <div className="flex flex-col">
+          <Reveal delay={0.08}>
+            <div className="card-glow flex h-full flex-col p-6 sm:p-9">
               <h3 className="text-xl font-medium text-text-primary">
                 JOB Kiinteistötekniikka Oy
               </h3>
@@ -519,7 +713,7 @@ function ContactSection() {
                 Y-tunnus 2295210-9
               </p>
 
-              <div className="mt-8 flex flex-col">
+              <div className="mt-6 flex flex-col">
                 {contactRows.map((row, i) => {
                   const Icon = row.icon;
                   return (
@@ -528,16 +722,19 @@ function ContactSection() {
                       href={row.href}
                       target={row.label === "Osoite" ? "_blank" : undefined}
                       rel={row.label === "Osoite" ? "noreferrer" : undefined}
-                      className={`group flex items-start gap-4 py-5 ${
-                        i > 0 ? "border-t border-border" : ""
-                      }`}
+                      className={cn(
+                        "group flex items-start gap-4 py-5",
+                        i > 0 && "border-t border-[rgba(77,166,255,0.12)]",
+                      )}
                     >
-                      <Icon className="mt-0.5 h-5 w-5 shrink-0 text-accent-glow" />
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[rgba(77,166,255,0.26)] bg-[rgba(16,32,58,0.4)]">
+                        <Icon className="h-4 w-4 text-accent" />
+                      </span>
                       <span>
                         <span className="block font-mono text-[11px] uppercase tracking-[0.14em] text-text-tertiary">
                           {row.label}
                         </span>
-                        <span className="mt-1 block text-text-primary transition-colors group-hover:text-accent-glow">
+                        <span className="mt-1 block text-text-primary transition-colors group-hover:text-accent">
                           {row.value}
                         </span>
                         {row.meta ? (
@@ -550,38 +747,14 @@ function ContactSection() {
                   );
                 })}
               </div>
+
+              <p className="mt-auto pt-6 text-sm leading-6 text-text-tertiary">
+                Pohjois-Savon alue ja koko Suomi.
+              </p>
             </div>
           </Reveal>
         </div>
       </div>
     </section>
-  );
-}
-
-/* ---------- shared ---------- */
-
-function SectionHeader({
-  kicker,
-  title,
-  description,
-}: {
-  kicker: string;
-  title: string;
-  description?: string;
-}) {
-  return (
-    <div className="max-w-2xl">
-      <p className="eyebrow flex items-center gap-3">
-        {kicker}
-      </p>
-      <h2 className="mt-6 text-balance text-[clamp(2rem,4.5vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.02em] text-text-primary">
-        {title}
-      </h2>
-      {description ? (
-        <p className="mt-6 text-pretty text-lg leading-8 text-text-secondary">
-          {description}
-        </p>
-      ) : null}
-    </div>
   );
 }

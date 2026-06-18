@@ -184,3 +184,15 @@ Tarkennus 2026-05-25 / Tuotesivun mobiili
 - Mobiilissa alle Tailwindin `sm`-rajan (640px) tuotekortit näytetään yhtenä keskitettynä sarakkeena. Kahden sarakkeen grid alkaa vasta, kun kortit ja painikkeet mahtuvat ilman tekstin ylivuotoa.
 - Kategoriat eivät saa venyttää mobiilileveyttä. Käytä mobiilissa täysleveää grid-listaa, `min-w-0`-suojia ja tekstin truncatea pitkille kategorianimille.
 
+
+Uudistus 2026-06-10 / Verkkokaupan poisto ja premium-ilme
+- Kauppaominaisuus on poistettu kokonaan: ei /tuotteet-reittiä, ei tilauslistaa, ei cart-providereita eikä Selaa tuotteita -nappeja missään.
+- Tuotedata säilytetään repossa tulevaa käyttöä varten: src/data/catalog.json, src/lib/products.ts, public/products ja scripts-kansio. Näitä ei poisteta.
+- Hero-CTA:t ovat Pyydä tarjous (primary) ja Tutustu palveluihin (outline). Heron alla on hiljainen puhelinnumerorivi.
+- Typografia on briefin mukainen: Mozilla Headline display-otsikoissa, Mozilla Text leivässä ja navigaatiossa, JetBrains Mono teknisissä yksityiskohdissa. Inter ja Space Grotesk on poistettu.
+- Bokeh-paletti painottuu tummaan siniseen, indigoon ja syvään violettiin. Cyan esiintyy vain pieninä harvinaisina valopisteinä.
+- Sivulla on kiinteä, lähes huomaamaton film grain -kerros (.grain), joka estää gradienttien banding-ilmiön. Opacity pidetään 0.05 tasolla tai alle.
+- Heron sisääntuloanimaatio on puhdasta CSS:ää (hero-rise), joten sisältö ei koskaan jää piiloon JS:n viivästyessä. Scroll reveal piilottaa elementin vain jos se on varmasti foldin alapuolella mountin hetkellä.
+- Heron alla on stats-kaista (25 ammattilaista, 4 osaamisaluetta, 10 lupaa, 5 kaupunkia). Luvut pidetään faktisina.
+- Toiminta-alueen city-pillit ovat interaktiivisia ja vaihtavat Google Maps -embedin kohteen.
+- Framer Motion ei ole enää käytössä landing-sivulla. Revealit ovat omaa kevyttä IntersectionObserver-toteutusta.

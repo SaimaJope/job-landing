@@ -32,20 +32,20 @@ type Dust = {
   oy: number;
 };
 
-// Muted blue + violet family, like real out-of-focus city lights.
+// Dark blue to deep purple family, like real out-of-focus city lights at night.
 const PALETTE: Array<[number, number, number]> = [
-  [0, 128, 184], // JOB blue, subdued
-  [20, 150, 192], // teal-blue
-  [50, 118, 210], // blue
-  [112, 205, 220], // cyan highlight
-  [104, 92, 205], // blue-violet
-  [132, 88, 194], // violet
-  [164, 92, 174], // muted magenta-violet
-  [72, 82, 172], // indigo
+  [0, 118, 178], // JOB blue, subdued
+  [36, 96, 205], // blue
+  [46, 66, 178], // deep indigo
+  [78, 64, 198], // blue-violet
+  [104, 58, 186], // deep purple
+  [128, 62, 172], // violet
+  [88, 44, 138], // darkest purple, depth layer
+  [112, 200, 224], // cyan pinprick, rare
 ];
 
-// Weighted pick: mostly blue, violet only as depth.
-const COLOR_WEIGHTS = [4, 3, 3, 1, 2, 2, 1, 2];
+// Weighted pick: blue and indigo carry, purple gives depth, cyan only sparks.
+const COLOR_WEIGHTS = [5, 4, 3, 3, 3, 2, 2, 1];
 
 // deterministic PRNG so the composition is stable across reloads
 function mulberry32(seed: number) {
@@ -76,10 +76,10 @@ function buildOrbs(compact: boolean): Orb[] {
   for (let i = 0; i < COUNT; i++) {
     const depth = rng(); // 0..1
     // closer (higher depth) = bigger and softer, but keep it calmer than glow blobs.
-    const radius = 14 + Math.pow(depth, 1.65) * 118 + rng() * 14;
-    const softness = 0.38 + depth * 0.55;
+    const radius = 16 + Math.pow(depth, 1.6) * 150 + rng() * 16;
+    const softness = 0.45 + depth * 0.5;
     // Real bokeh reads from layered transparent discs, not maximum brightness.
-    const alpha = 0.24 - depth * 0.13 + rng() * 0.035;
+    const alpha = 0.22 - depth * 0.12 + rng() * 0.03;
     const lowerBand = rng() < 0.72;
 
     orbs.push({
@@ -94,6 +94,27 @@ function buildOrbs(compact: boolean): Orb[] {
       speed: 0.025 + rng() * 0.04,
       phase: rng() * Math.PI * 2,
       depth: 0.18 + depth * 0.55,
+      ox: 0,
+      oy: 0,
+      sprite: null,
+    });
+  }
+
+  // a few small bright cores, like in-focus light points among the blur
+  const SPARKS = compact ? 2 : 3;
+  for (let i = 0; i < SPARKS; i++) {
+    orbs.push({
+      bx: 0.12 + rng() * 0.76,
+      by: 0.16 + rng() * 0.55,
+      radius: 5 + rng() * 6,
+      color: [150, 205, 255],
+      alpha: 0.5 + rng() * 0.18,
+      softness: 0.16,
+      ax: 4 + rng() * 6,
+      ay: 3 + rng() * 5,
+      speed: 0.02 + rng() * 0.03,
+      phase: rng() * Math.PI * 2,
+      depth: 0.5,
       ox: 0,
       oy: 0,
       sprite: null,
@@ -146,16 +167,17 @@ function makeSprite(orb: Orb): HTMLCanvasElement {
   const soft = orb.softness;
   const sharp = 1 - soft;
 
-  // rim color shifted toward white for a lens edge highlight, but not neon.
-  const rim = `rgba(${Math.round(cr + (255 - cr) * 0.45)}, ${Math.round(
-    cg + (255 - cg) * 0.45,
-  )}, ${Math.round(cb + (255 - cb) * 0.45)}, ${clampA(a * (0.42 + sharp * 0.38))})`;
+  // rim is only a faint lens shimmer; the disc body carries the light so the
+  // result reads as out-of-focus glow instead of an outlined bubble.
+  const rim = `rgba(${Math.round(cr + (255 - cr) * 0.35)}, ${Math.round(
+    cg + (255 - cg) * 0.35,
+  )}, ${Math.round(cb + (255 - cb) * 0.35)}, ${clampA(a * (0.3 + sharp * 0.22))})`;
 
-  const body = `rgba(${cr}, ${cg}, ${cb}, ${clampA(a * (0.32 + sharp * 0.2))})`;
-  const center = `rgba(${cr}, ${cg}, ${cb}, ${clampA(a * (0.24 + sharp * 0.16))})`;
+  const body = `rgba(${cr}, ${cg}, ${cb}, ${clampA(a * (0.42 + sharp * 0.16))})`;
+  const center = `rgba(${cr}, ${cg}, ${cb}, ${clampA(a * (0.36 + sharp * 0.12))})`;
 
-  const rimPos = 0.74 + sharp * 0.16; // crisp -> rim nearer the edge
-  const fade = Math.min(rimPos + 0.04 + soft * 0.16, 0.999);
+  const rimPos = 0.68 + sharp * 0.14; // crisp -> rim nearer the edge
+  const fade = Math.min(rimPos + 0.08 + soft * 0.2, 0.999);
 
   const grad = ctx.createRadialGradient(r, r, 0, r, r, r);
   grad.addColorStop(0, center);
@@ -238,7 +260,7 @@ export function BokehBackground() {
       const base = ctx!.createLinearGradient(0, 0, 0, height);
       base.addColorStop(0, "rgba(0, 0, 0, 0.72)");
       base.addColorStop(0.42, "rgba(5, 8, 16, 0.2)");
-      base.addColorStop(1, "rgba(0, 141, 200, 0.1)");
+      base.addColorStop(1, "rgba(58, 52, 160, 0.12)");
       ctx!.fillStyle = base;
       ctx!.fillRect(0, 0, width, height);
 
@@ -431,7 +453,7 @@ export function BokehBackground() {
 
   return (
     <div ref={wrapRef} aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      <canvas ref={canvasRef} className="block h-full w-full opacity-80 saturate-[0.82]" />
+      <canvas ref={canvasRef} className="block h-full w-full opacity-85 saturate-[0.92]" />
       {/* keep the headline readable while the bokeh shows around it */}
       <div className="absolute inset-0 bg-[radial-gradient(58%_46%_at_50%_42%,rgba(5,8,16,0.68),transparent_74%)]" />
       <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-background via-background/75 to-transparent" />

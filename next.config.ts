@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
-const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1];
-const inferredGithubPagesBasePath =
-  process.env.GITHUB_ACTIONS === "true" && repositoryName ? `/${repositoryName}` : "";
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? inferredGithubPagesBasePath;
+// Served from the root of the custom domain jobkauppa.fi (see public/CNAME), so
+// basePath is empty. Set NEXT_PUBLIC_BASE_PATH only to preview under a project
+// subpath such as saimajope.github.io/job-landing/.
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,

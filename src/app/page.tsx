@@ -5,7 +5,7 @@ import { LandingPage } from "@/components/landing-page";
 export const metadata: Metadata = {
   title: "JOB Kiinteistötekniikka Oy | Sähkö, tele ja turva-asennukset Pohjois-Savossa",
   description:
-    "Sähkö-, tele- ja turva-asennukset sekä kiinteistöhuolto Pohjois-Savossa. 25 ammattilaista, Iisalmesta Varkauteen ja tarvittaessa koko Suomi.",
+    "Sähkö-, tele-, turva- ja kylmäasennukset, urakoinnit ja huoltotyöt Pohjois-Savossa. Suunnittelusta toteutukseen, avaimet käteen. Iisalmesta Varkauteen ja tarvittaessa koko Suomi.",
 };
 
 export default function Home() {

@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   Mail,
   MapPin,
+  Package,
   Phone,
   RadioTower,
   ShieldCheck,
@@ -32,9 +33,9 @@ type Service = {
 const services: Service[] = [
   {
     icon: Zap,
-    title: "Sähköasennukset",
+    title: "Sähköasennukset ja urakointi",
     description:
-      "Sähköjärjestelmien suunnittelu ja asennus uudis- ja saneerauskohteisiin. Kiinteistöt, yrityskohteet ja taloyhtiöt.",
+      "Sähköurakointi, sähkölaitekorjaukset ja sähköhuolto uudis- ja saneerauskohteisiin. Kiinteistöt, yrityskohteet ja taloyhtiöt.",
     qualification: "TUKES sähköurakointi",
   },
   {
@@ -53,15 +54,22 @@ const services: Service[] = [
   },
   {
     icon: Thermometer,
-    title: "Huolto ja kylmälaitteet",
+    title: "Kylmä ja huolto",
     description:
-      "Lämpöpumppu- ja kylmälaiteasennukset sekä kiinteistötekniikan jatkuva huolto ja ylläpitosopimukset.",
+      "Kylmälaite- ja lämpöpumppuasennukset sekä kiinteistötekniikan jatkuva huolto ja ylläpitosopimukset.",
     qualification: "TUKES kylmälaiteasennus",
+  },
+  {
+    icon: Package,
+    title: "Tarvikemyynti",
+    description:
+      "Sähkö-, turva-, kylmä- ja teletarvikkeet edullisesti. Voit kysyä tarjousta myös pelkistä tarvikkeista.",
+    qualification: "Tarjous myös tarvikkeista",
   },
 ];
 
 const companyStats = [
-  { value: "25", label: "Ammattilaista" },
+  { value: "2009", label: "Toiminnassa vuodesta" },
   { value: "4", label: "Osaamisaluetta" },
   { value: "10", label: "Lupaa ja jäsenyyttä" },
 ];
@@ -129,17 +137,18 @@ const areaTargets = [
 
 const contactRows = [
   {
-    label: "Puhelin",
-    value: "044 572 3200",
-    icon: Phone,
-    href: "tel:+358445723200",
-  },
-  {
-    label: "Sähköposti",
+    label: "Yhteydenottopyynnöt",
     value: "info@jobkauppa.fi",
-    meta: "Osoite vahvistetaan ennen julkaisua.",
+    meta: "Sekä jobkiinteistotekniikka@gmail.com",
     icon: Mail,
     href: "mailto:info@jobkauppa.fi",
+  },
+  {
+    label: "Suora töidentilaus",
+    value: "044 572 3200",
+    meta: "Juha Tykkyläinen",
+    icon: Phone,
+    href: "tel:+358445723200",
   },
   {
     label: "Osoite",
@@ -231,23 +240,19 @@ function Reveal({
   );
 }
 
-/* shared section heading: mono index eyebrow + real display headline, left aligned */
+/* shared section heading: eyebrow label + real display headline, left aligned */
 function SectionHeading({
-  index,
   eyebrow,
   title,
   className,
 }: {
-  index: string;
   eyebrow: string;
   title: ReactNode;
   className?: string;
 }) {
   return (
     <div className={cn("max-w-2xl", className)}>
-      <p className="section-label">
-        {index} <span className="text-text-tertiary">/ {eyebrow}</span>
-      </p>
+      <p className="section-label">{eyebrow}</p>
       <h2 className="mt-4 font-display text-[clamp(1.9rem,4vw,2.9rem)] font-medium leading-[1.1] tracking-[-0.02em] text-text-primary">
         {title}
       </h2>
@@ -265,7 +270,7 @@ function HeroSection() {
       <div className="container-shell relative z-10 flex min-h-[88svh] flex-col justify-center pb-24 pt-40">
         <div className="max-w-3xl">
           <p className="hero-rise eyebrow">
-            Pohjois-Savo // Sähkö · Tele · Turva · Huolto
+            Pohjois-Savo // Sähkö · Tele · Turva · Kylmä · Huolto
           </p>
 
           <h1 className="hero-rise mt-7 text-balance font-display text-[clamp(2.6rem,7vw,5rem)] font-medium leading-[1.02] tracking-[-0.025em] [animation-delay:100ms]">
@@ -275,9 +280,10 @@ function HeroSection() {
           </h1>
 
           <p className="hero-rise mt-8 max-w-xl text-pretty leading-8 text-text-secondary [animation-delay:200ms] sm:text-lg">
-            JOB Kiinteistötekniikka Oy hoitaa sähkö-, tele- ja turva-asennukset
-            sekä kiinteistöhuollon suunnittelusta ylläpitoon. 25 ammattilaista,
-            Iisalmesta Varkauteen ja tarvittaessa koko Suomi.
+            JOB Kiinteistötekniikka Oy tekee sähkö-, tele-, turva- ja
+            kylmäasennukset, urakoinnit ja huoltotyöt. Suunnittelusta
+            toteutukseen, avaimet käteen. Iisalmesta Varkauteen ja tarvittaessa
+            koko Suomi.
           </p>
 
           <div className="hero-rise mt-10 flex flex-wrap items-center gap-x-7 gap-y-5 [animation-delay:300ms]">
@@ -314,7 +320,7 @@ function ServicesSection() {
     <section id="palvelut" className="section-pad">
       <div className="container-shell">
         <Reveal>
-          <SectionHeading index="01" eyebrow="Palvelut" title="Mitä teemme" />
+          <SectionHeading eyebrow="Palvelut" title="Mitä teemme" />
         </Reveal>
 
         <div className="mt-12 border-t border-[rgba(120,160,210,0.12)]">
@@ -324,9 +330,6 @@ function ServicesSection() {
               <Reveal key={service.title} delay={i * 0.04}>
                 <div className="group grid grid-cols-1 gap-x-8 gap-y-4 border-b border-[rgba(120,160,210,0.12)] py-8 transition-colors hover:bg-[rgba(120,160,210,0.03)] md:grid-cols-[auto_1fr_auto] md:items-start md:py-9">
                   <div className="flex items-center gap-5 md:gap-6">
-                    <span className="font-mono text-[11px] text-text-tertiary">
-                      0{i + 1}
-                    </span>
                     <Icon className="h-6 w-6 text-accent" />
                   </div>
 
@@ -366,14 +369,18 @@ function CompanySection() {
             <div>
               <p className="section-label">02 <span className="text-text-tertiary">/ Yritys</span></p>
               <h2 className="mt-4 text-balance font-display text-[clamp(1.9rem,4vw,2.9rem)] font-medium leading-[1.1] tracking-[-0.02em] text-text-primary">
-                Teknistä osaamista,
+                Laaja-alainen
                 <br />
-                inhimillistä otetta.
+                ammattitaito.
               </h2>
               <p className="mt-6 max-w-lg text-pretty leading-8 text-text-secondary">
-                Yhdistämme vahvan teknisen osaamisen ja käytännön kokemuksen.
-                Tärkeintä on ratkaista asiakkaan tarve luotettavasti, laatua ja
-                aikataulua kunnioittaen.
+                Sähköurakointia, sähkölaitekorjauksia ja sähköhuoltoa, tele- ja
+                turva-asennuksia sekä kylmäasennuksia. Kaikki kohteet myös
+                avaimet käteen -periaatteella, suunnittelusta toteutukseen.
+              </p>
+              <p className="mt-4 max-w-lg text-pretty leading-8 text-text-secondary">
+                Vuodesta 2009. Olemme toteuttaneet useita merkittäviä hankkeita
+                Pohjois-Savossa ja muualla Suomessa.
               </p>
 
               <div className="mt-12 flex flex-wrap gap-x-14 gap-y-7">
@@ -432,17 +439,21 @@ function ProcessSection() {
     <section id="toteutus" className="section-pad pt-0">
       <div className="container-shell">
         <Reveal>
-          <SectionHeading index="03" eyebrow="Toteutus" title="Näin työ etenee" />
+          <SectionHeading
+            eyebrow="Toteutus"
+            title="Suunnittelusta toteutukseen"
+          />
+          <p className="mt-6 max-w-xl text-pretty leading-8 text-text-secondary">
+            Kaikki kohteet myös avaimet käteen -periaatteella. Sama
+            yhteyshenkilö kulkee mukana kartoituksesta luovutukseen.
+          </p>
         </Reveal>
 
         <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-[rgba(120,160,210,0.12)] md:grid-cols-3">
           {processSteps.map((step, i) => (
-            <Reveal key={step.index} delay={i * 0.06} className="h-full">
+            <Reveal key={step.title} delay={i * 0.06} className="h-full">
               <div className="flex h-full flex-col bg-[rgba(16,26,44,0.4)] p-8 md:p-9">
-                <div className="font-display text-[2.4rem] font-medium leading-none text-accent-line">
-                  {step.index}
-                </div>
-                <h3 className="mt-6 text-lg font-medium text-text-primary">
+                <h3 className="text-lg font-medium text-text-primary">
                   {step.title}
                 </h3>
                 <p className="mt-3 text-sm leading-6 text-text-secondary">
@@ -473,7 +484,6 @@ function AreaSection() {
           <Reveal>
             <div>
               <SectionHeading
-                index="04"
                 eyebrow="Toiminta-alue"
                 title="Pohjois-Savo on kotialue"
               />
@@ -575,7 +585,7 @@ function ContactSection() {
     <section id="yhteystiedot" className="section-pad">
       <div className="container-shell">
         <Reveal>
-          <SectionHeading index="05" eyebrow="Yhteys" title="Ota yhteyttä" />
+          <SectionHeading eyebrow="Yhteys" title="Ota yhteyttä" />
         </Reveal>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">

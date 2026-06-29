@@ -14,9 +14,9 @@
   --color-text-tertiary: #475569;
   --color-border: rgba(31, 168, 224, 0.15);
   --color-border-strong: rgba(31, 168, 224, 0.3);
-  --font-sans: var(--font-mozilla-text);
-  --font-mono: var(--font-jetbrains);
-  --font-display: var(--font-mozilla-headline);
+  --font-sans: var(--font-ubuntu);
+  --font-mono: var(--font-ubuntu-mono);
+  --font-display: var(--font-ubuntu);
 }
 
 :root {
@@ -56,7 +56,7 @@ body {
   overflow-x: hidden;
   background: var(--background);
   color: var(--text-primary);
-  font-family: var(--font-mozilla-text), "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-ubuntu), "Segoe UI", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -65,7 +65,7 @@ h1,
 h2,
 h3,
 .font-display {
-  font-family: var(--font-mozilla-headline), var(--font-mozilla-text), "Segoe UI", sans-serif;
+  font-family: var(--font-ubuntu), "Segoe UI", sans-serif;
 }
 
 a {
@@ -111,9 +111,9 @@ textarea {
     text-wrap: pretty;
   }
 
-  /* Small technical labels: JetBrains Mono, uppercase, tracked */
+  /* Small technical labels: Ubuntu Mono, uppercase, tracked */
   .eyebrow {
-    font-family: var(--font-jetbrains), monospace;
+    font-family: var(--font-ubuntu-mono), monospace;
     font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -121,7 +121,7 @@ textarea {
   }
 
   .eyebrow-muted {
-    font-family: var(--font-jetbrains), monospace;
+    font-family: var(--font-ubuntu-mono), monospace;
     font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -130,7 +130,7 @@ textarea {
 
   /* uppercase tracked sans label, used for nav, eyebrows and buttons */
   .label-caps {
-    font-family: var(--font-mozilla-text), "Segoe UI", sans-serif;
+    font-family: var(--font-ubuntu), "Segoe UI", sans-serif;
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.2em;
@@ -139,7 +139,7 @@ textarea {
 
   /* left-aligned section eyebrow, no decorative lines */
   .section-label {
-    font-family: var(--font-jetbrains), monospace;
+    font-family: var(--font-ubuntu-mono), monospace;
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.2em;

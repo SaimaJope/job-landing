@@ -1,36 +1,27 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono, Mozilla_Headline, Mozilla_Text } from "next/font/google";
+import { Ubuntu, Ubuntu_Mono } from "next/font/google";
 
 import "./globals.css";
 
-const mozillaText = Mozilla_Text({
+const ubuntu = Ubuntu({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mozilla-text",
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-ubuntu",
   display: "swap",
   fallback: ["Segoe UI", "Arial", "sans-serif"],
-  adjustFontFallback: false,
 });
 
-const mozillaHeadline = Mozilla_Headline({
+const ubuntuMono = Ubuntu_Mono({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mozilla-headline",
-  display: "swap",
-  fallback: ["Segoe UI", "Arial", "sans-serif"],
-  adjustFontFallback: false,
-});
-
-const jetBrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
+  weight: ["400", "700"],
+  variable: "--font-ubuntu-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "JOB Kiinteistötekniikka Oy | Sähkö, tele ja turva Pohjois-Savossa",
   description:
-    "Sähkö-, tele- ja turva-asennukset Pohjois-Savossa. Suunnittelusta asennukseen, 25 ammattilaista Iisalmesta Varkauteen.",
+    "Sähkö-, tele-, turva- ja kylmäasennukset, urakoinnit ja huoltotyöt Pohjois-Savossa. Suunnittelusta toteutukseen, avaimet käteen, Iisalmesta Varkauteen.",
   manifest: "/site.webmanifest",
   icons: {
     icon: [
@@ -54,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="fi"
-      className={`${mozillaText.variable} ${mozillaHeadline.variable} ${jetBrainsMono.variable}`}
+      className={`${ubuntu.variable} ${ubuntuMono.variable}`}
     >
       <body>
         {children}

@@ -453,7 +453,7 @@ export function BokehBackground() {
 
   return (
     <div ref={wrapRef} aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      <canvas ref={canvasRef} className="block h-full w-full opacity-85 saturate-[0.92]" />
+      <canvas ref={canvasRef} className="block h-full w-full opacity-70 saturate-[0.82]" />
       {/* keep the headline readable while the bokeh shows around it */}
       <div className="absolute inset-0 bg-[radial-gradient(58%_46%_at_50%_42%,rgba(5,8,16,0.68),transparent_74%)]" />
       <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-background via-background/75 to-transparent" />

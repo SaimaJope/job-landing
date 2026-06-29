@@ -42,7 +42,7 @@ export function SiteHeader() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
         scrolled && !open
-          ? "border-b border-[rgba(77,166,255,0.12)] bg-background/55 shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-2xl"
+          ? "border-b border-[rgba(120,160,210,0.1)] bg-background/90 backdrop-blur-sm"
           : "border-b border-transparent bg-transparent",
       )}
     >

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
-import { MaintenancePage } from "@/components/maintenance-page";
+import { LandingPage } from "@/components/landing-page";
 
 export const metadata: Metadata = {
-  title: "JOB Kiinteistötekniikka Oy | Verkkosivut päivittyvät",
+  title: "JOB Kiinteistötekniikka Oy | Sähkö, tele ja turva-asennukset Pohjois-Savossa",
   description:
-    "Verkkosivujamme päivitetään. Palvelemme normaalisti, ota yhteyttä puhelimitse 044 572 3200 tai sähköpostitse.",
+    "Sähkö-, tele- ja turva-asennukset sekä kiinteistöhuolto Pohjois-Savossa. 25 ammattilaista, Iisalmesta Varkauteen ja tarvittaessa koko Suomi.",
 };
 
 export default function Home() {
-  return <MaintenancePage />;
+  return <LandingPage />;
 }

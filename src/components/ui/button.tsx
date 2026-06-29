@@ -9,9 +9,9 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "border-[rgba(140,200,255,0.35)] bg-[linear-gradient(180deg,#2f9bff,#1265cf)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.32),0_10px_32px_rgba(28,110,220,0.4),0_0_30px_rgba(47,130,255,0.28)] hover:brightness-[1.1] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.36),0_14px_40px_rgba(40,125,235,0.5),0_0_44px_rgba(77,166,255,0.34)]",
+          "border-transparent bg-[#1f7fe0] text-white shadow-[0_4px_14px_rgba(0,0,0,0.25)] hover:bg-[#2f8df0]",
         outline:
-          "border-[rgba(99,170,255,0.45)] bg-[rgba(16,32,58,0.28)] text-text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_0_22px_rgba(45,130,230,0.12)] backdrop-blur-xl hover:border-[rgba(140,200,255,0.7)] hover:bg-[rgba(26,48,82,0.4)] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_0_30px_rgba(77,166,255,0.22)]",
+          "border-[rgba(120,160,210,0.3)] bg-transparent text-text-primary hover:border-[rgba(120,185,255,0.55)] hover:bg-[rgba(120,160,210,0.06)]",
         ghost:
           "border-transparent bg-transparent text-text-secondary hover:text-text-primary",
       },

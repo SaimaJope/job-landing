@@ -103,6 +103,11 @@ textarea {
     padding-block: clamp(88px, 12vw, 168px);
   }
 
+  /* bottom padding only; Tailwind's pt-0 loses the cascade against .section-pad */
+  .section-pad-b {
+    padding-block: 0 clamp(88px, 12vw, 168px);
+  }
+
   .text-balance {
     text-wrap: balance;
   }

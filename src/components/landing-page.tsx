@@ -355,7 +355,7 @@ function ServicesSection() {
 
 function CompanySection() {
   return (
-    <section id="yritys" className="section-pad pt-0">
+    <section id="yritys" className="section-pad-b">
       <div className="container-shell">
         <div className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
           <Reveal>
@@ -428,7 +428,7 @@ function CompanySection() {
 
 function ProcessSection() {
   return (
-    <section id="toteutus" className="section-pad pt-0">
+    <section id="toteutus" className="section-pad-b">
       <div className="container-shell">
         <Reveal>
           <SectionHeading title="Suunnittelusta toteutukseen" />
@@ -467,7 +467,7 @@ function AreaSection() {
   )}&z=${target.zoom}&output=embed`;
 
   return (
-    <section id="toiminta-alue" className="section-pad pt-0">
+    <section id="toiminta-alue" className="section-pad-b">
       <div className="container-shell">
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <Reveal>

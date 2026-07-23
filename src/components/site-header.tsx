@@ -57,9 +57,9 @@ export function SiteHeader() {
             src={publicPath("/logo.png")}
             alt="JOB Kiinteistötekniikka Oy"
             width={170}
-            height={80}
+            height={107}
             priority
-            className="h-9 w-auto object-contain"
+            className="h-14 w-auto object-contain"
           />
         </Link>
 

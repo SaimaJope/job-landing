@@ -12,8 +12,8 @@ export function SiteFooter() {
             src={publicPath("/logo.png")}
             alt="JOB Kiinteistötekniikka Oy"
             width={140}
-            height={66}
-            className="h-8 w-auto object-contain opacity-90"
+            height={88}
+            className="h-12 w-auto object-contain opacity-90"
           />
         </Link>
 

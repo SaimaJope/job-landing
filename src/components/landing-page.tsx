@@ -240,20 +240,17 @@ function Reveal({
   );
 }
 
-/* shared section heading: eyebrow label + real display headline, left aligned */
+/* shared section heading: display headline, left aligned */
 function SectionHeading({
-  eyebrow,
   title,
   className,
 }: {
-  eyebrow: string;
   title: ReactNode;
   className?: string;
 }) {
   return (
     <div className={cn("max-w-2xl", className)}>
-      <p className="section-label">{eyebrow}</p>
-      <h2 className="mt-4 font-display text-[clamp(1.9rem,4vw,2.9rem)] font-medium leading-[1.1] tracking-[-0.02em] text-text-primary">
+      <h2 className="font-display text-[clamp(1.9rem,4vw,2.9rem)] font-medium leading-[1.1] tracking-[-0.02em] text-text-primary">
         {title}
       </h2>
     </div>
@@ -269,11 +266,7 @@ function HeroSection() {
 
       <div className="container-shell relative z-10 flex min-h-[88svh] flex-col justify-center pb-24 pt-40">
         <div className="max-w-3xl">
-          <p className="hero-rise eyebrow">
-            Pohjois-Savo // Sähkö · Tele · Turva · Kylmä · Huolto
-          </p>
-
-          <h1 className="hero-rise mt-7 text-balance font-display text-[clamp(2.6rem,7vw,5rem)] font-medium leading-[1.02] tracking-[-0.025em] [animation-delay:100ms]">
+          <h1 className="hero-rise text-balance font-display text-[clamp(2.6rem,7vw,5rem)] font-medium leading-[1.02] tracking-[-0.025em] [animation-delay:100ms]">
             <span className="text-display">Sähkö, tele ja turva.</span>
             <br />
             <span className="text-accent-line">Pohjois-Savossa.</span>
@@ -320,7 +313,7 @@ function ServicesSection() {
     <section id="palvelut" className="section-pad">
       <div className="container-shell">
         <Reveal>
-          <SectionHeading eyebrow="Palvelut" title="Mitä teemme" />
+          <SectionHeading title="Mitä teemme" />
         </Reveal>
 
         <div className="mt-12 border-t border-[rgba(120,160,210,0.12)]">
@@ -367,8 +360,7 @@ function CompanySection() {
         <div className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
           <Reveal>
             <div>
-              <p className="section-label">02 <span className="text-text-tertiary">/ Yritys</span></p>
-              <h2 className="mt-4 text-balance font-display text-[clamp(1.9rem,4vw,2.9rem)] font-medium leading-[1.1] tracking-[-0.02em] text-text-primary">
+              <h2 className="text-balance font-display text-[clamp(1.9rem,4vw,2.9rem)] font-medium leading-[1.1] tracking-[-0.02em] text-text-primary">
                 Laaja-alainen
                 <br />
                 ammattitaito.
@@ -439,10 +431,7 @@ function ProcessSection() {
     <section id="toteutus" className="section-pad pt-0">
       <div className="container-shell">
         <Reveal>
-          <SectionHeading
-            eyebrow="Toteutus"
-            title="Suunnittelusta toteutukseen"
-          />
+          <SectionHeading title="Suunnittelusta toteutukseen" />
           <p className="mt-6 max-w-xl text-pretty leading-8 text-text-secondary">
             Kaikki kohteet myös avaimet käteen -periaatteella. Sama
             yhteyshenkilö kulkee mukana kartoituksesta luovutukseen.
@@ -483,10 +472,7 @@ function AreaSection() {
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <Reveal>
             <div>
-              <SectionHeading
-                eyebrow="Toiminta-alue"
-                title="Pohjois-Savo on kotialue"
-              />
+              <SectionHeading title="Pohjois-Savo on kotialue" />
               <p className="mt-6 text-pretty leading-8 text-text-secondary">
                 Pääasiallinen toiminta-alue on Iisalmi, Siilinjärvi, Kuopio,
                 Leppävirta ja Varkaus. Tarvittaessa teemme asennuksia muuallakin
@@ -585,7 +571,7 @@ function ContactSection() {
     <section id="yhteystiedot" className="section-pad">
       <div className="container-shell">
         <Reveal>
-          <SectionHeading eyebrow="Yhteys" title="Ota yhteyttä" />
+          <SectionHeading title="Ota yhteyttä" />
         </Reveal>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">

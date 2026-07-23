@@ -100,12 +100,12 @@ textarea {
   }
 
   .section-pad {
-    padding-block: clamp(88px, 12vw, 168px);
+    padding-block: clamp(64px, 8vw, 108px);
   }
 
   /* bottom padding only; Tailwind's pt-0 loses the cascade against .section-pad */
   .section-pad-b {
-    padding-block: 0 clamp(88px, 12vw, 168px);
+    padding-block: 0 clamp(64px, 8vw, 108px);
   }
 
   .text-balance {

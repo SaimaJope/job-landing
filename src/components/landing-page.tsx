@@ -264,7 +264,7 @@ function HeroSection() {
     <section className="relative overflow-hidden">
       <BokehBackground />
 
-      <div className="container-shell relative z-10 flex min-h-[88svh] flex-col justify-center pb-24 pt-40">
+      <div className="container-shell relative z-10 flex min-h-[78svh] flex-col justify-center pb-16 pt-36">
         <div className="max-w-3xl">
           <h1 className="hero-rise text-balance font-display text-[clamp(2.6rem,7vw,5rem)] font-medium leading-[1.02] tracking-[-0.025em] [animation-delay:100ms]">
             <span className="text-display">Sähkö, tele ja turva.</span>
